@@ -43,7 +43,26 @@ struct ContentView: View {
                             .foregroundStyle(Color.secondary)
                     }
                 }
-            RichTextKeyboardToolbar(context: richTextContext, leadingButtons: { $0 }, trailingButtons: { $0 }, formatSheet: { $0 })
+            RichTextKeyboardToolbar(context: richTextContext, leadingButtons: { _ in
+                HStack(spacing: 6) {
+                    Button("", systemImage: "bold") {
+                        richTextContext.toggleStyle(.bold)
+                    }
+                    .foregroundStyle(Color.primary)
+                    Button("", systemImage: "italic") {
+                        richTextContext.toggleStyle(.italic)
+                    }
+                    .foregroundStyle(Color.primary)
+                    Button("", systemImage: "underline") {
+                        richTextContext.toggleStyle(.underlined)
+                    }
+                    .foregroundStyle(Color.primary)
+                    Button("", systemImage: "strikethrough") {
+                        richTextContext.toggleStyle(.strikethrough)
+                    }
+                    .foregroundStyle(Color.primary)
+                }
+            }, trailingButtons: { $0 }, formatSheet: { $0.foregroundStyle(Color.primary) })
         }
         .padding()
         .sheet(isPresented: $welcomePopup, content: {

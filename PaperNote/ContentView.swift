@@ -23,7 +23,21 @@ struct ContentView: View {
     }
     
     var textEditorBottomCornerRadius: CGFloat {
-        isTextEditorFocused ? 12.5 : 50
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return isTextEditorFocused ? 12.5 : 50
+        } else {
+            return 12.5
+        }
+    }
+    
+    var veryBottomPadding: CGFloat {
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            return isTextEditorFocused ? 0 : -45
+        } else if UIDevice.current.userInterfaceIdiom == .pad {
+            return isTextEditorFocused ? 0 : -20
+        } else {
+            return 0
+        }
     }
     
     var body: some View {
@@ -64,23 +78,25 @@ struct ContentView: View {
                 )
                 .focused($isTextEditorFocused)
             RichTextKeyboardToolbar(context: richTextContext, leadingButtons: { _ in
-                HStack(spacing: 6) {
-                    Button("", systemImage: "bold") {
-                        richTextContext.toggleStyle(.bold)
+                if UIDevice.current.userInterfaceIdiom == .phone {
+                    HStack(spacing: 6) {
+                        Button("", systemImage: "bold") {
+                            richTextContext.toggleStyle(.bold)
+                        }
+                        .foregroundStyle(Color.primary)
+                        Button("", systemImage: "italic") {
+                            richTextContext.toggleStyle(.italic)
+                        }
+                        .foregroundStyle(Color.primary)
+                        Button("", systemImage: "underline") {
+                            richTextContext.toggleStyle(.underlined)
+                        }
+                        .foregroundStyle(Color.primary)
+                        Button("", systemImage: "strikethrough") {
+                            richTextContext.toggleStyle(.strikethrough)
+                        }
+                        .foregroundStyle(Color.primary)
                     }
-                    .foregroundStyle(Color.primary)
-                    Button("", systemImage: "italic") {
-                        richTextContext.toggleStyle(.italic)
-                    }
-                    .foregroundStyle(Color.primary)
-                    Button("", systemImage: "underline") {
-                        richTextContext.toggleStyle(.underlined)
-                    }
-                    .foregroundStyle(Color.primary)
-                    Button("", systemImage: "strikethrough") {
-                        richTextContext.toggleStyle(.strikethrough)
-                    }
-                    .foregroundStyle(Color.primary)
                 }
             }, trailingButtons: { $0 }, formatSheet: { $0.foregroundStyle(Color.primary) })
         }
@@ -91,7 +107,7 @@ struct ContentView: View {
         .onChange(of: note, perform: { _ in
             saveNote()
         })
-        .padding(.bottom, (isTextEditorFocused && UIDevice.current.userInterfaceIdiom == .phone) ? 0 : -45)
+        .padding(.bottom, veryBottomPadding)
     }
     
     static private func getNote() -> NSAttributedString? {

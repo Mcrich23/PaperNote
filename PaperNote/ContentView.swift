@@ -31,6 +31,12 @@ struct ContentView: View {
     }
     
     var veryBottomPadding: CGFloat {
+        if #available(iOS 17.0, *) {
+            if UIDevice.current.userInterfaceIdiom == .vision {
+                return isTextEditorFocused ? 0 : -20
+            }
+        }
+        
         if UIDevice.current.userInterfaceIdiom == .phone {
             return isTextEditorFocused ? 0 : -45
         } else if UIDevice.current.userInterfaceIdiom == .pad {

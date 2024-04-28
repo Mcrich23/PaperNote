@@ -24,11 +24,11 @@ struct WelcomePopup: View {
             
             Button(action: dismiss.callAsFunction) {
                 Text("Let's Go")
+                    .frame(width: 250)
                     .padding()
                     .foregroundStyle(Color.white)
                     .background(RoundedRectangle(cornerRadius: 12.5).fill(Color.accentColor))
             }
-            .frame(width: 250)
         }
         .padding()
     }

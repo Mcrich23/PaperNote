@@ -43,6 +43,9 @@ struct ContentView: View {
                             .foregroundStyle(Color.secondary)
                     }
                 }
+                .padding(5)
+                .background(RoundedRectangle(cornerRadius: 12.5).fill(Color(uiColor: .systemBackground)))
+                .shadow(radius: 10)
             RichTextKeyboardToolbar(context: richTextContext, leadingButtons: { _ in
                 HStack(spacing: 6) {
                     Button("", systemImage: "bold") {

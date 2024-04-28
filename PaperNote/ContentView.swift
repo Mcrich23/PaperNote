@@ -42,7 +42,7 @@ struct ContentView: View {
         } else if UIDevice.current.userInterfaceIdiom == .pad {
             return isTextEditorFocused ? 0 : -20
         } else {
-            return 0
+            return isTextEditorFocused ? 0 : 3
         }
     }
     

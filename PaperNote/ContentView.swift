@@ -16,6 +16,15 @@ struct ContentView: View {
     init() {
         self._note = State(wrappedValue: ContentView.getNote() ?? NSAttributedString())
     }
+    @FocusState var isTextEditorFocused
+    
+    var textEditorTopCornerRadius: CGFloat {
+        12.5
+    }
+    
+    var textEditorBottomCornerRadius: CGFloat {
+        isTextEditorFocused ? 12.5 : 50
+    }
     
     var body: some View {
         VStack {
@@ -44,8 +53,16 @@ struct ContentView: View {
                     }
                 }
                 .padding(5)
-                .background(RoundedRectangle(cornerRadius: 12.5).fill(Color(uiColor: .systemBackground)))
-                .shadow(radius: 10)
+                .clipShape(
+                    UnevenRoundedRectangle(topLeadingRadius: textEditorTopCornerRadius, bottomLeadingRadius: textEditorBottomCornerRadius, bottomTrailingRadius: textEditorBottomCornerRadius, topTrailingRadius: textEditorTopCornerRadius)
+//                        .fill(Color(uiColor: .systemBackground))
+                )
+                .background(
+                    UnevenRoundedRectangle(topLeadingRadius: textEditorTopCornerRadius, bottomLeadingRadius: textEditorBottomCornerRadius, bottomTrailingRadius: textEditorBottomCornerRadius, topTrailingRadius: textEditorTopCornerRadius)
+                        .fill(Color(uiColor: .systemBackground))
+                        .shadow(radius: 10)
+                )
+                .focused($isTextEditorFocused)
             RichTextKeyboardToolbar(context: richTextContext, leadingButtons: { _ in
                 HStack(spacing: 6) {
                     Button("", systemImage: "bold") {
@@ -74,6 +91,7 @@ struct ContentView: View {
         .onChange(of: note, perform: { _ in
             saveNote()
         })
+        .padding(.bottom, (isTextEditorFocused && UIDevice.current.userInterfaceIdiom == .phone) ? 0 : -45)
     }
     
     static private func getNote() -> NSAttributedString? {
